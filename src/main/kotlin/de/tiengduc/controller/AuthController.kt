@@ -17,24 +17,24 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
-    private val authenticationManager: AuthenticationManager,
+//    private val authenticationManager: AuthenticationManager,
     private val jwtTokenProvider: JwtTokenProvider,
     private val userService: UserService,  
     private val passwordEncoder: PasswordEncoder
 ) {
     @PostMapping("/signin")
-    fun authenticateUser(@Valid @RequestBody loginRequest: LoginRequest): ResponseEntity<JwtAuthenticationResponse> {
-         val authentication: Authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(
-                loginRequest.username,
-                loginRequest.password
-            )
-        )
-        println("auth  $authentication abc")
-        SecurityContextHolder.getContext().authentication = authentication
-        val jwt: String = jwtTokenProvider.generateToken(authentication)
+    fun authenticateUser(@Valid @RequestBody loginRequest: LoginRequest): ResponseEntity<String> {
+//         val authentication: Authentication = authenticationManager.authenticate(
+//            UsernamePasswordAuthenticationToken(
+//                loginRequest.username,
+//                loginRequest.password
+//            )
+//        )
+//        println("auth  $authentication abc")
+//        SecurityContextHolder.getContext().authentication = authentication
+//        val jwt: String = jwtTokenProvider.generateToken(authentication)
 
-        return ResponseEntity.ok(JwtAuthenticationResponse(jwt))
+        return ResponseEntity.ok("JwtAuthenticationResponse(jwt)")
     }
 
     @PostMapping("/signup")
