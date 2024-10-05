@@ -4,6 +4,7 @@ import de.tiengduc.model.enum.Role
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Size
 
 
 @Entity
@@ -14,15 +15,16 @@ data class User(
 
     @Column(nullable = false, unique = true)
     @get: NotBlank
-    val username: String = "",
+    @field:Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters --- service layer")
+    var username: String,
 
     @Column(nullable = false)
     @get: NotBlank
-    val password: String = "",
+    var password: String,
 
     @Column(nullable = false, unique = true)
-    @get: Email
-    val email: String = "",
+    @get: Email(message = "Your email address is not valid- entityyyy")
+    var email: String,
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
