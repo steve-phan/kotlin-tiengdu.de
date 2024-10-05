@@ -1,7 +1,6 @@
 package de.tiengduc.controller
 
 import de.tiengduc.dto.UserDto
-import de.tiengduc.exception.UsernameAlreadyExistsException
 import de.tiengduc.model.entity.User
 import de.tiengduc.service.UserService
 import jakarta.validation.Valid
@@ -16,9 +15,6 @@ class UserController(
 
     @PostMapping
     fun createUser(@Valid @RequestBody userDto: UserDto): ResponseEntity<Map<String, Long>> {
-        if (userService.existsByUsername(userDto.username)) {
-            throw UsernameAlreadyExistsException("Username '${userDto.username}' is already in use. Please choose another one.")
-        }
         val createdUser = userService.createUser(userDto)
         return ResponseEntity.ok(mapOf("id" to createdUser.id))
     }

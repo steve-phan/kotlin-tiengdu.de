@@ -1,6 +1,7 @@
 package de.tiengduc.service
 
 import de.tiengduc.dto.UserDto
+import de.tiengduc.exception.UsernameAlreadyExistsException
 import de.tiengduc.model.entity.User
 import de.tiengduc.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -17,6 +18,9 @@ class UserService(
     }
 
     fun createUser(userDto: UserDto): User {
+        if (existsByUsername(userDto.username)) {
+            throw UsernameAlreadyExistsException("Username '${userDto.username}' is already in use. Please choose another one.")
+        }
         val user = User(
             username = userDto.username,
             password = passwordEncoder.encode(userDto.password),
@@ -35,13 +39,11 @@ class UserService(
 
     fun updateUser(id: Long, userDto: UserDto): User? {
         val existingUser = userRepository.findById(id).orElse(null) ?: return null
-
         existingUser.apply {
             username = userDto.username
             email = userDto.email
             password = passwordEncoder.encode(userDto.password)
         }
-
         return userRepository.save(existingUser)
     }
 
